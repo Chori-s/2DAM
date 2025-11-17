@@ -1,0 +1,77 @@
+import 'package:age_calculator/age_calculator.dart';
+import 'base.dart';
+
+// Clase inmutable de Usuario
+class UsuarioNoMutable extends Base {
+  final int id;
+  final String username;
+  final String password;
+  final String email;
+  final String? nombre;
+  final String? apellidos;
+  final String? nacionalidad;
+  final DateTime? nacimiento;
+  final DateTime creacion;
+
+// Al prinicpio es igual que lo que hay comentado en la otra clase de Usuario
+  const UsuarioNoMutable({
+    required this.id,
+    required this.username,
+    required this.password,
+    required this.email,
+    this.nombre,
+    this.apellidos,
+    this.nacionalidad,
+    this.nacimiento,
+    this.creacion = const DateTime.fromMillisecondsSinceEpoch(0),
+    Base? context,
+  }) : super(context: context);
+
+  String get nombreCompleto => '${nombre ?? ''} ${apellidos ?? ''}'.trim();
+
+  int? get edad =>
+      nacimiento == null ? null : AgeCalculator.age(nacimiento!).years;
+
+  //Como antes el metodo copyWith() que devuelve una nueva instancia modificada.
+  UsuarioNoMutable copyWith({
+    int? id,
+    String? username,
+    String? password,
+    String? email,
+    String? nombre,
+    String? apellidos,
+    String? nacionalidad,
+    DateTime? nacimiento,
+    DateTime? creacion,
+    Base? context,
+  }) {
+    return UsuarioNoMutable(
+      id: id ?? this.id,
+      username: username ?? this.username,
+      password: password ?? this.password,
+      email: email ?? this.email,
+      nombre: nombre ?? this.nombre,
+      apellidos: apellidos ?? this.apellidos,
+      nacionalidad: nacionalidad ?? this.nacionalidad,
+      nacimiento: nacimiento ?? this.nacimiento,
+      creacion: creacion ?? this.creacion,
+      context: context ?? this.context,
+    );
+  }
+
+  @override
+  String toString() => '''
+UsuarioNoMutable(
+  Id: $id
+  Username: $username
+  Password: $password
+  Email: $email
+  Nombre: ${nombre ?? '-'}
+  Apellidos: ${apellidos ?? '-'}
+  Nacionalidad: ${nacionalidad ?? '-'}
+  Fecha de nacimiento: ${nacimiento != null ? nacimiento!.toIso8601String() : '-'}
+  Edad: ${edad ?? '-'}
+  Creación: $creacion
+)
+''';
+}
